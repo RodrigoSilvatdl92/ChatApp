@@ -1,3 +1,6 @@
+This project was made with tailwind and ReactJs and Firebase.
+Its a chatApp where we can register, log in, customize our profile, add friends and then talk to them
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
