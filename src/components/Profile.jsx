@@ -27,7 +27,7 @@ function Profile({ editProfile }) {
         <img
           src={profileData.photo || avatar}
           alt="/"
-          className="w-[90px] m-auto mt-2 cursor-pointer rounded-[50%] h-[90px] object-cover"
+          className="w-[90px] m-auto mt-2 rounded-[50%] h-[90px] object-cover"
         />
       </div>
       <div className="w-full flex justify-center mt-2">

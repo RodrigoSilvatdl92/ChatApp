@@ -21,7 +21,7 @@ import {
 import { db } from "../firebase";
 import { BsPersonFillAdd } from "react-icons/bs";
 import { AiOutlineSearch } from "react-icons/ai";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { setConversationUser } from "../store/authReducer";
 
 function Options({ setIsConversationSelected }) {
@@ -272,20 +272,22 @@ function Options({ setIsConversationSelected }) {
             className="w-[90px] hidden md:block rounded-[50%] h-[90px] object-cover border-4 border-white"
           />
         </div>
-        {displayProfile && (
-          <Modal
-            onClose={() => {
-              setEditProfile(false);
-              setDisplayProfile(false);
-            }}
-          >
-            {editProfile ? (
-              <EditProfile onClose={() => setEditProfile(false)} />
-            ) : (
-              <Profile editProfile={() => setEditProfile(true)} />
-            )}
-          </Modal>
-        )}
+        <AnimatePresence>
+          {displayProfile && (
+            <Modal
+              onClose={() => {
+                setEditProfile(false);
+                setDisplayProfile(false);
+              }}
+            >
+              {editProfile ? (
+                <EditProfile onClose={() => setEditProfile(false)} />
+              ) : (
+                <Profile editProfile={() => setEditProfile(true)} />
+              )}
+            </Modal>
+          )}
+        </AnimatePresence>
         {displayFriends && (
           <ModalFriends onClose={() => setDisplayFriends(false)}>
             <div>
