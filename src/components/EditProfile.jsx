@@ -7,7 +7,7 @@ import { updateDoc, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
-function EditProfile({ onClose }) {
+function EditProfile({ onClose, firstLogIn, isNotFirstLogin }) {
   const [data, setData] = useState(null);
   const [picture, setPicture] = useState("");
   const fileInputRef = useRef(null);
@@ -18,7 +18,6 @@ function EditProfile({ onClose }) {
   const [userEmail, setUserEmail] = useState("");
 
   const currentUser = useSelector(selectCurrentUser);
-  
 
   /* Loading profile data from firebase */
 
@@ -38,6 +37,8 @@ function EditProfile({ onClose }) {
     }
   }, [data]);
 
+  const [errorProfile, setErrorProfile] = useState("");
+
   const handleFileInputChange = () => {
     const file = fileInputRef.current.files[0];
     if (file) {
@@ -48,6 +49,12 @@ function EditProfile({ onClose }) {
 
   const updateProfile = async (event) => {
     event.preventDefault();
+    if (firstLogIn && (!firstName || !lastName)) {
+      setErrorProfile(
+        "You need to fill the First Name and Last Name before you proceed"
+      );
+      return;
+    }
 
     const dbPath = doc(db, "users", currentUser);
 
@@ -67,12 +74,13 @@ function EditProfile({ onClose }) {
       phoneNumber: phoneNumber,
       photo: pictureUrl,
       userEmail: userEmail,
+      perfilCompleted: true,
     };
 
     await updateDoc(dbPath, {
       perfil,
     });
-
+    isNotFirstLogin();
     onClose();
   };
 
@@ -104,6 +112,7 @@ function EditProfile({ onClose }) {
               className="border-b border-black border-opacity-30 w-full  text-black mt-1 outline-none "
               onChange={(event) => {
                 setFirstName(event.target.value);
+                setErrorProfile("");
               }}
               value={firstName}
             />
@@ -115,6 +124,7 @@ function EditProfile({ onClose }) {
               className="border-b border-black border-opacity-30 w-full  text-black mt-1 outline-none "
               onChange={(event) => {
                 setLastName(event.target.value);
+                setErrorProfile("");
               }}
               value={lastName}
             />
@@ -126,6 +136,7 @@ function EditProfile({ onClose }) {
               className="border-b border-black border-opacity-30 w-full  text-black mt-1 outline-none "
               onChange={(event) => {
                 setPhoneNumber(event.target.value);
+                setErrorProfile("");
               }}
               value={phoneNumber}
             />
@@ -137,25 +148,35 @@ function EditProfile({ onClose }) {
               className="border-b border-black border-opacity-30 w-full  text-black mt-1 outline-none "
               onChange={(event) => {
                 setUserEmail(event.target.value);
+                setErrorProfile("");
               }}
               value={userEmail}
             />
           </div>
+          {errorProfile && (
+            <p className="text-sm text-red-800 my-2 text-center">
+              {errorProfile}
+            </p>
+          )}
           <div className="flex justify-around ">
             <motion.button
-              className="text-black bg-[white] border-2 border-opacity-30 border-black px-7 font-semibold rounded-xl hover:bg-[#733A7E]  hover:text-white mt-3 "
+              className="text-black bg-[white] border-2 border-opacity-30 border-black px-7 font-semibold rounded-xl hover:bg-[#733A7E]  hover:text-white mt-3 mb-2 "
               whileTap={{ scale: 0.99, y: 2 }}
               onClick={updateProfile}
             >
               Update
             </motion.button>
-            <motion.button
-              className="text-black bg-[white] border-2 border-opacity-30 border-black px-7 font-semibold rounded-xl hover:bg-[#733A7E]  hover:text-white mt-3"
-              whileTap={{ scale: 0.99, y: 2 }}
-              onClick={() => onClose()}
-            >
-              Cancel
-            </motion.button>
+            {firstLogIn ? (
+              ""
+            ) : (
+              <motion.button
+                className="text-black bg-[white] border-2 border-opacity-30 border-black px-7 font-semibold rounded-xl hover:bg-[#733A7E]  hover:text-white mt-3 mb-2 "
+                whileTap={{ scale: 0.99, y: 2 }}
+                onClick={() => onClose()}
+              >
+                Cancel
+              </motion.button>
+            )}
           </div>
         </form>
       </div>

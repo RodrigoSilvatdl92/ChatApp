@@ -55,6 +55,7 @@ export const signUp = async (email, password) => {
     await sendEmailVerification(user);
     await setDoc(doc(db, "users", email), {
       perfil: {
+        perfilCompleted: false,
         firstName: "",
         lastName: "",
         photo: "",

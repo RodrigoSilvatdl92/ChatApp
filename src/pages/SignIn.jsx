@@ -70,14 +70,16 @@ function SignIn() {
 
   return (
     <div className="fixed bg-white w-screen h-screen">
-      <div className="fixed top-0 left-0 w-screen h-screen shadow-lg bg-black/30 z-10" />
       <div className="max-w-screen-2xl mx-auto relative flex justify-center gap-10 items-center">
         <h1 className="absolute md:hidden top-4 mx-auto text-center text-[#733A7E] w-full font-bold text-4xl z-10">
-          ChatApp - Instant communication at your fingers
+          <span>ChatApp</span>
+          <br />
+          <br />
+          <span>Instant communication at your fingers</span>
         </h1>
 
         <div className="flex h-screen items-center">
-          <div className="md:shadow-2xl  flex lg:flex-row rounded-lg">
+          <div className="shadow-2xl border flex lg:flex-row rounded-lg">
             <div className="flex flex-col justify-center z-20  md:bg-[#3a1641] bg-center p-8 rounded-l-lg">
               <div className="bg-[white]/10  min-w-[340px] mx-auto  rounded-md  min-h-[250px] ">
                 <form className="m-4 p-2" onSubmit={formik.handleSubmit}>
@@ -136,12 +138,12 @@ function SignIn() {
                       {passwordIsVisible ? (
                         <AiFillEyeInvisible
                           onClick={() => handlerPasswordVisible(1)}
-                          className="absolute top-2 right-2 "
+                          className="absolute top-2 right-2 cursor-pointer"
                         />
                       ) : (
                         <AiFillEye
                           onClick={() => handlerPasswordVisible(1)}
-                          className="absolute top-2 right-2 "
+                          className="absolute top-2 right-2 cursor-pointer "
                         />
                       )}
                     </div>
@@ -176,7 +178,11 @@ function SignIn() {
             <div className=" hidden md:flex md:flex-col h-[100%] ml-4 my-2">
               <h1 className="hidden md:block top-4 ml-0 mb-2 text-[#733A7E] font-semibold text-2xl text-left z-20">
                 <span className="text-4xl font-bold">ChatApp</span> <br />
-                Instant communication <br /> at your fingers{" "}
+                <span className="text-4xl font-bold">
+                  Instant communication
+                </span>{" "}
+                <br />
+                <span className="text-4xl font-bold">at your fingers</span>
               </h1>
               <img src={fundoMetade} alt="/" className="w-[400px] mx-auto" />
             </div>

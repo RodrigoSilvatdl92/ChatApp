@@ -25,9 +25,31 @@ import { motion, AnimatePresence } from "framer-motion";
 import { setConversationUser } from "../store/authReducer";
 
 function Options({ setIsConversationSelected }) {
+  const currentUser = useSelector(selectCurrentUser);
   /* show/edit Profile */
   const [displayProfile, setDisplayProfile] = useState(false);
   const [editProfile, setEditProfile] = useState(false);
+  const [firstLogInMessage, setFirstLogInMessage] = useState(false);
+
+  useEffect(() => {
+    const isProfileCompleted = async () => {
+      const userDoc = doc(db, "users", currentUser);
+      const userSnap = await getDoc(userDoc);
+
+      const data = userSnap.data();
+
+      console.log("a seguir a isto");
+      console.log(data);
+      if (data.perfil.perfilCompleted) {
+        return;
+      } else {
+        setDisplayProfile(true);
+        setEditProfile(true);
+        setFirstLogInMessage(true);
+      }
+    };
+    isProfileCompleted();
+  }, [currentUser]);
 
   /* show friends */
 
@@ -36,7 +58,7 @@ function Options({ setIsConversationSelected }) {
 
   /********************************************/
   /* LOAD Friend Requests */
-  const currentUser = useSelector(selectCurrentUser);
+
   const [requestsFriends, setRequestsFriends] = useState("");
 
   useEffect(() => {
@@ -279,184 +301,195 @@ function Options({ setIsConversationSelected }) {
                 setEditProfile(false);
                 setDisplayProfile(false);
               }}
+              firstLogIn={firstLogInMessage}
             >
               {editProfile ? (
-                <EditProfile onClose={() => setEditProfile(false)} />
+                <EditProfile
+                  onClose={() => setEditProfile(false)}
+                  firstLogIn={firstLogInMessage}
+                  isNotFirstLogin={() => setFirstLogInMessage(false)}
+                />
               ) : (
                 <Profile editProfile={() => setEditProfile(true)} />
               )}
             </Modal>
           )}
-        </AnimatePresence>
-        {displayFriends && (
-          <ModalFriends onClose={() => setDisplayFriends(false)}>
-            <div>
-              <div className="flex items-center justify-between mt-2">
-                <div className="relative z-20">
-                  <button
-                    className="text-black ml-2"
-                    onClick={handlerFriendsRequests}
-                  >
-                    <BsPersonFillAdd
-                      size={30}
-                      title="Friends Requests"
+
+          {displayFriends && (
+            <ModalFriends onClose={() => setDisplayFriends(false)}>
+              <div>
+                <div className="flex items-center justify-between mt-2">
+                  <div className="relative z-20">
+                    <button
+                      className="text-black ml-2"
+                      onClick={handlerFriendsRequests}
+                    >
+                      <BsPersonFillAdd
+                        size={30}
+                        title="Friends Requests"
+                        className={
+                          requestsFriends.length === 0
+                            ? "text-black"
+                            : "text-green-700"
+                        }
+                      />
+                    </button>
+                    <span
                       className={
                         requestsFriends.length === 0
-                          ? "text-black"
-                          : "text-green-700"
+                          ? "text-black text-sm absolute"
+                          : "text-green-700 text-sm absolute"
                       }
+                    >
+                      {requestsFriends.length}
+                    </span>
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Search friend..."
+                      className="pl-5 text-black outline-none mr-4"
+                      onChange={(event) => setSearchQuery(event.target.value)}
+                      value={searchQuery}
                     />
-                  </button>
-                  <span
-                    className={
-                      requestsFriends.length === 0
-                        ? "text-black text-sm absolute"
-                        : "text-green-700 text-sm absolute"
-                    }
-                  >
-                    {requestsFriends.length}
-                  </span>
+                    <AiOutlineSearch
+                      size={20}
+                      className="absolute text-black top-1 left-0"
+                    />
+                  </div>
                 </div>
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Search friend..."
-                    className="pl-5 text-black outline-none mr-4"
-                    onChange={(event) => setSearchQuery(event.target.value)}
-                    value={searchQuery}
-                  />
-                  <AiOutlineSearch
-                    size={20}
-                    className="absolute text-black top-1 left-0"
-                  />
-                </div>
-              </div>
 
-              <div
-                className={`mt-2 w-[90%] mx-auto h-[100%] flex flex-col ${
-                  displayFriendsRequests && requestsFriends.length > 0
-                    ? "blur-sm"
-                    : ""
-                } `}
-              >
-                <div className="overflow-y-auto h-[200px] md:h-[400px] ">
-                  {searchResults.length > 0 ? (
-                    searchResults.map((friend) => (
-                      <div
-                        className="border-b-2 pb-2 border-black/50"
-                        key={friend.perfil.userEmail}
-                      >
-                        <div className="text-black flex justify-between items-center  mt-2 ">
+                <div
+                  className={`mt-2 w-[90%] mx-auto h-[100%] flex flex-col ${
+                    displayFriendsRequests && requestsFriends.length > 0
+                      ? "blur-sm"
+                      : ""
+                  } `}
+                >
+                  <div className="overflow-y-auto h-[200px] md:h-[400px] ">
+                    {searchResults.length > 0 ? (
+                      searchResults.map((friend) => (
+                        <div
+                          className="border-b-2 pb-2 border-black/50"
+                          key={friend.perfil.userEmail}
+                        >
+                          <div className="text-black flex justify-between items-center  mt-2 ">
+                            <div>
+                              <p className="font-bold">
+                                {friend.perfil.firstName}{" "}
+                                {friend.perfil.lastName}
+                              </p>
+                              <p>{friend.perfil.userEmail}</p>
+                            </div>
+                            <div>
+                              <img
+                                src={friend.perfil.photo}
+                                alt="/"
+                                className="w-[60px] h-[60px] rounded-[50%] object-cover"
+                              />
+                            </div>
+                          </div>
                           <div>
-                            <p className="font-bold">
-                              {friend.perfil.firstName} {friend.perfil.lastName}
+                            <motion.button
+                              className="text-black bg-[white] text-sm border-2 border-opacity-30 border-black px-7 font-semibold rounded-xl hover:bg-[#733A7E]  hover:text-white mt-3 mr-2 "
+                              whileTap={{ scale: 0.99, y: 2 }}
+                              onClick={() => {
+                                startConversation(friend.perfil.userEmail);
+                                setIsConversationSelected();
+                              }}
+                            >
+                              Start Conversation
+                            </motion.button>
+                            <motion.button
+                              className="text-black bg-[white] text-sm border-2 border-opacity-30 border-black px-4 font-semibold rounded-xl hover:bg-[#733A7E]  hover:text-white mt-3 "
+                              whileTap={{ scale: 0.99, y: 2 }}
+                              onClick={() =>
+                                deleteFriend(friend.perfil.userEmail)
+                              }
+                            >
+                              Delete Contact
+                            </motion.button>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div>
+                        <p className="text-black">No friends added</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                {displayFriendsRequests && (
+                  <motion.div
+                    initial={{ width: "0px" }}
+                    animate={{ width: "80%" }}
+                    exit={{ width: "0px" }}
+                    transition={{ type: "tween", stiffness: 70, delay: 0.0 }}
+                    className="fixed top-0 left-0 overflow-y-hidden w-[80%] h-[100%] bg-white z-10 rounded-tl-md"
+                  >
+                    {friendRequestData.map((friendRequest) => (
+                      <motion.div
+                        className="ml-1"
+                        key={friendRequest.perfil.userEmail}
+                        initial={{ x: "-100vw" }}
+                        animate={{ x: 0 }}
+                        exit={{ x: "-100vw" }}
+                        transition={{
+                          type: "tween",
+                          stiffness: 70,
+                          delay: 0.2,
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="flex justify-between items-center mt-2 w-[70%] mx-auto ">
+                          <div>
+                            <p className="text-black font-semibold">
+                              {friendRequest.perfil.firstName}{" "}
+                              {friendRequest.perfil.lastName}
                             </p>
-                            <p>{friend.perfil.userEmail}</p>
+                            <p className="text-black">
+                              {friendRequest.perfil.userEmail}
+                            </p>
                           </div>
                           <div>
                             <img
-                              src={friend.perfil.photo}
+                              src={friendRequest.perfil.photo || avatar}
                               alt="/"
-                              className="w-[60px] h-[60px] rounded-[50%] object-cover"
+                              className="hidden md:block w-[50px] h-[50px] rounded-[50%]"
                             />
                           </div>
                         </div>
-                        <div>
-                          <motion.button
-                            className="text-black bg-[white] text-sm border-2 border-opacity-30 border-black px-7 font-semibold rounded-xl hover:bg-[#733A7E]  hover:text-white mt-3 mr-2 "
-                            whileTap={{ scale: 0.99, y: 2 }}
-                            onClick={() => {
-                              startConversation(friend.perfil.userEmail);
-                              setIsConversationSelected();
-                            }}
-                          >
-                            Start Conversation
-                          </motion.button>
-                          <motion.button
-                            className="text-black bg-[white] text-sm border-2 border-opacity-30 border-black px-4 font-semibold rounded-xl hover:bg-[#733A7E]  hover:text-white mt-3 "
-                            whileTap={{ scale: 0.99, y: 2 }}
+                        <div className="flex justify-center gap-5 mt-2">
+                          <button
+                            className="bg-green-700 px-2 rounded-xl"
                             onClick={() =>
-                              deleteFriend(friend.perfil.userEmail)
+                              acceptFriendRequest(
+                                friendRequest.perfil.userEmail
+                              )
                             }
                           >
-                            Delete Contact
-                          </motion.button>
+                            Accept
+                          </button>
+                          <button
+                            className="bg-red-700 px-2 rounded-xl"
+                            onClick={() =>
+                              rejectFriendRequest(
+                                friendRequest.perfil.userEmail
+                              )
+                            }
+                          >
+                            Decline
+                          </button>
                         </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div>
-                      <p className="text-black">No friends added</p>
-                    </div>
-                  )}
-                </div>
+                        <hr className="border border-black border-opacity-60 mt-2 mx-auto w-[90%]" />
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                )}
               </div>
-              {displayFriendsRequests && (
-                <motion.div
-                  initial={{ width: "0px" }}
-                  animate={{ width: "80%" }}
-                  exit={{ width: "0px" }}
-                  transition={{ type: "tween", stiffness: 70, delay: 0.0 }}
-                  className="fixed top-0 left-0 overflow-y-hidden w-[80%] h-[100%] bg-white z-10 rounded-tl-md"
-                >
-                  {friendRequestData.map((friendRequest) => (
-                    <motion.div
-                      className="ml-1"
-                      key={friendRequest.perfil.userEmail}
-                      initial={{ x: "-100vw" }}
-                      animate={{ x: 0 }}
-                      exit={{ x: "-100vw" }}
-                      transition={{
-                        type: "tween",
-                        stiffness: 70,
-                        delay: 0.2,
-                      }}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <div className="flex justify-between items-center mt-2 w-[70%] mx-auto ">
-                        <div>
-                          <p className="text-black font-semibold">
-                            {friendRequest.perfil.firstName}{" "}
-                            {friendRequest.perfil.lastName}
-                          </p>
-                          <p className="text-black">
-                            {friendRequest.perfil.userEmail}
-                          </p>
-                        </div>
-                        <div>
-                          <img
-                            src={friendRequest.perfil.photo || avatar}
-                            alt="/"
-                            className="hidden md:block w-[50px] h-[50px] rounded-[50%]"
-                          />
-                        </div>
-                      </div>
-                      <div className="flex justify-center gap-5 mt-2">
-                        <button
-                          className="bg-green-700 px-2 rounded-xl"
-                          onClick={() =>
-                            acceptFriendRequest(friendRequest.perfil.userEmail)
-                          }
-                        >
-                          Accept
-                        </button>
-                        <button
-                          className="bg-red-700 px-2 rounded-xl"
-                          onClick={() =>
-                            rejectFriendRequest(friendRequest.perfil.userEmail)
-                          }
-                        >
-                          Decline
-                        </button>
-                      </div>
-                      <hr className="border border-black border-opacity-60 mt-2 mx-auto w-[90%]" />
-                    </motion.div>
-                  ))}
-                </motion.div>
-              )}
-            </div>
-          </ModalFriends>
-        )}
+            </ModalFriends>
+          )}
+        </AnimatePresence>
       </div>
     </>
   );

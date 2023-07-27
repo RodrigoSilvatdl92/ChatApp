@@ -121,12 +121,12 @@ function SignUp() {
                       {passwordIsVisible ? (
                         <AiFillEyeInvisible
                           onClick={() => handlerPasswordVisible(1)}
-                          className="absolute top-2 right-2 "
+                          className="absolute top-2 right-2 cursor-pointer"
                         />
                       ) : (
                         <AiFillEye
                           onClick={() => handlerPasswordVisible(1)}
-                          className="absolute top-2 right-2 "
+                          className="absolute top-2 right-2 cursor-pointer"
                         />
                       )}
                     </div>
