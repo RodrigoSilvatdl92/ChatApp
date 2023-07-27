@@ -5,6 +5,7 @@ import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { setConversationUser } from "../store/authReducer";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import avatar from "../images/avatar.png";
 
 function LastsConversations({ selectConversation }) {
   const currentUser = useSelector(selectCurrentUser);
@@ -129,7 +130,7 @@ function LastsConversations({ selectConversation }) {
                 onClick={() => selectConversation(friend.user.id)}
               >
                 <img
-                  src={friend.user.photo}
+                  src={friend.user.photo || avatar}
                   alt="/"
                   className="w-[45px] h-[45px] rounded-[50%] object-cover py-1"
                 />

@@ -10,14 +10,6 @@ function Modal({ children, onClose, firstLogIn }) {
       exit={{ opacity: 0 }}
       onClick={firstLogIn ? undefined : onClose}
     >
-      {firstLogIn && (
-        <div>
-          <p className="text-[#733A7E] text-4xl ">
-            Welcome to our ChatApp,
-            <br /> please complete your profile before using our app
-          </p>
-        </div>
-      )}
       <motion.div
         className="bg-white w-[360px] h-[300px] md:min-w-[380px] md:min-h-[420px] rounded-md overflow-auto z-35 "
         initial={{ x: "-100vw" }}

@@ -383,7 +383,7 @@ function Options({ setIsConversationSelected }) {
                             </div>
                             <div>
                               <img
-                                src={friend.perfil.photo}
+                                src={friend.perfil.photo || avatar}
                                 alt="/"
                                 className="w-[60px] h-[60px] rounded-[50%] object-cover"
                               />

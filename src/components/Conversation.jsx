@@ -11,6 +11,7 @@ import { BsFillSendFill } from "react-icons/bs";
 import { selectConversationUser } from "../store/authReducer";
 import { useEffect } from "react";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import avatar from "../images/avatar.png";
 
 function Conversation({ onClose }) {
   const currentUser = useSelector(selectCurrentUser);
@@ -278,7 +279,7 @@ function Conversation({ onClose }) {
             ) : (
               <>
                 <img
-                  src={otherUserData?.perfil?.photo}
+                  src={otherUserData?.perfil?.photo || avatar}
                   alt="/"
                   className="w-[30px] h-[30px] xl:w-[50px] xl:h-[50px]  rounded-[50%] ml-2 object-cover mt-2"
                 />

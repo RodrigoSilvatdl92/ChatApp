@@ -49,9 +49,9 @@ function EditProfile({ onClose, firstLogIn, isNotFirstLogin }) {
 
   const updateProfile = async (event) => {
     event.preventDefault();
-    if (firstLogIn && (!firstName || !lastName)) {
+    if (firstLogIn && (!firstName || !lastName || !userEmail)) {
       setErrorProfile(
-        "You need to fill the First Name and Last Name before you proceed"
+        "You need to fill the First Name, Last Name and Email before you proceed"
       );
       return;
     }
@@ -87,6 +87,14 @@ function EditProfile({ onClose, firstLogIn, isNotFirstLogin }) {
   return (
     <>
       <div>
+        {firstLogIn && (
+          <div>
+            <p className="text-[#733A7E] text-sm ml-2 ">
+              <span className="font-bold">Welcome to our ChatApp.</span>
+              <br /> Please complete your profile before using our app
+            </p>
+          </div>
+        )}
         <h3 className="text-black text-center text-xl mt-2">Edit Profile</h3>
         <div>
           <img

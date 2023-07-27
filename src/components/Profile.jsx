@@ -42,25 +42,19 @@ function Profile({ editProfile }) {
       <div className="w-[85%] mx-auto">
         <div>
           <p className="text-black font-semibold mt-2">First Name:</p>
-          <p className="text-black mt-1 ">
-            {profileData.firstName || "example"}
-          </p>
+          <p className="text-black mt-1 ">{profileData.firstName || ""}</p>
         </div>
         <div>
           <p className="text-black font-semibold mt-2">Last Name:</p>
-          <p className="text-black mt-1">{profileData.lastName || "example"}</p>
+          <p className="text-black mt-1">{profileData.lastName || ""}</p>
         </div>
         <div>
           <p className="text-black font-semibold mt-2">Phone Number:</p>
-          <p className="text-black mt-1">
-            {profileData.phoneNumber || "example"}
-          </p>
+          <p className="text-black mt-1">{profileData.phoneNumber || ""}</p>
         </div>
         <div>
           <p className="text-black font-semibold mt-2">Email:</p>
-          <p className="text-black mt-1 mb-2">
-            {profileData.userEmail || "example"}
-          </p>
+          <p className="text-black mt-1 mb-2">{profileData.userEmail || ""}</p>
         </div>
       </div>
     </>
