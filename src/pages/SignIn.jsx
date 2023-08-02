@@ -18,6 +18,7 @@ import { recoverPassword } from "../store/authReducer";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { MdOutlineMail } from "react-icons/md";
 import { IoIosArrowBack } from "react-icons/io";
+import mobileTexting from "../images/mobileTexting.svg";
 
 function SignIn() {
   const dispatch = useDispatch();
@@ -71,17 +72,22 @@ function SignIn() {
   return (
     <div className="fixed bg-white w-screen h-screen">
       <div className="max-w-screen-2xl mx-auto relative flex justify-center gap-10 items-center">
-        <h1 className="absolute md:hidden top-4 mx-auto text-center text-[#733A7E] w-full font-bold text-4xl z-10">
+        <h1 className="absolute md:hidden top-4 mx-auto text-center text-[#596F7A] w-full font-bold text-4xl z-10">
           <span>ChatApp</span>
           <br />
           <br />
-          <span>Instant communication at your fingers</span>
+          <span className="text-lg">Instant communication at your fingers</span>
         </h1>
 
-        <div className="flex h-screen items-center">
-          <div className="shadow-2xl border flex lg:flex-row rounded-lg">
+        <div className="flex h-screen items-center mt-20 ">
+          <div className="shadow-2xl border-2 flex lg:flex-row rounded-lg relative ">
+            <img
+              src={mobileTexting}
+              alt="/"
+              className="w-[150px] h-[150px] absolute md:hidden top-[-131px]"
+            />
             <div className="flex flex-col justify-center z-20  md:bg-[#3a1641] bg-center p-8 rounded-l-lg">
-              <div className="bg-[white]/10  min-w-[340px] mx-auto  rounded-md  min-h-[250px] ">
+              <div className="bg-[white]/10 w-[300px] md:min-w-[340px] mx-auto  rounded-md  min-h-[250px] ">
                 <form className="m-4 p-2" onSubmit={formik.handleSubmit}>
                   <div className="pt-2 flex flex-col">
                     <label

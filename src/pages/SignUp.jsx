@@ -6,6 +6,7 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useFormik } from "formik";
 import { signUpSchema } from "../schemas/schemas";
 import { signUp } from "../store/authReducer";
+import mobileTexting from "../images/mobileTexting.svg";
 
 function SignUp() {
   /* password stuff */
@@ -54,15 +55,23 @@ function SignUp() {
 
   return (
     <div className="fixed bg-white w-screen h-screen">
-      <div className="fixed top-0 left-0 w-screen h-screen shadow-lg bg-black/30 z-10" />
       <div className="max-w-screen-2xl mx-auto relative flex justify-center gap-10 items-center">
-        <h1 className="absolute md:hidden top-4 mx-auto text-center text-[#733A7E] w-full font-bold text-4xl z-10">
-          ChatApp - Instant communication at your fingers
+        <h1 className="absolute md:hidden top-4 mx-auto text-center text-[#596F7A] w-full font-bold text-4xl z-10">
+          <span>ChatApp</span>
+          <br />
+          <br />
+          <span className="text-lg">Instant communication at your fingers</span>
         </h1>
-        <div className="flex h-screen items-center">
-          <div className="md:shadow-2xl  flex lg:flex-row rounded-lg">
+
+        <div className="flex h-screen items-center mt-20 ">
+          <div className="shadow-2xl border-2 flex lg:flex-row rounded-lg relative">
+            <img
+              src={mobileTexting}
+              alt="/"
+              className="w-[150px] h-[150px] absolute md:hidden top-[-131px]"
+            />
             <div className="flex flex-col justify-center z-20  md:bg-[#3a1641] bg-center p-8 rounded-l-lg">
-              <div className="bg-[white]/10  min-w-[340px] mx-auto  rounded-md  min-h-[250px] ">
+              <div className="bg-[white]/10  w-[300px] md:min-w-[340px] mx-auto  rounded-md  min-h-[250px] ">
                 <form className="m-4 p-2" onSubmit={formik.handleSubmit}>
                   <div className="pt-2 flex flex-col">
                     {/* Email */}
