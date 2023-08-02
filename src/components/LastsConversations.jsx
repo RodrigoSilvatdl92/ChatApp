@@ -141,7 +141,7 @@ function LastsConversations({ selectConversation }) {
                   <p>
                     {truncateString(
                       friend.messages[friend.messages.length - 1].content,
-                      20
+                      18
                     )}
                   </p>
                 </div>

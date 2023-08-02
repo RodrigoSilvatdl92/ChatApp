@@ -172,8 +172,6 @@ function Conversation({ onClose }) {
     }
   };
 
-  console.log(message);
-
   const handleSendMessage = async () => {
     if ((!otherUser && !message) || !otherUser || !message) {
       return setButtonDisabled(true);
@@ -268,10 +266,9 @@ function Conversation({ onClose }) {
     return year + "-" + month + "-" + day + " " + hours + ":" + minutes;
   }
 
-  console.log(conversation);
   return (
     <>
-      <div className="h-[10%] border-b border-black/30">
+      <div className="h-[10%] border-b border-black/30 w-full">
         <div className="flex justify-between">
           <div className="flex gap-2 items-center w-full ">
             {otherUserData === "" || !otherUser ? (
@@ -305,7 +302,7 @@ function Conversation({ onClose }) {
         <div
           ref={conversationContainerRef}
           id="conversationContainer"
-          className="h-[85%] overflow-y-scroll scrollbar-none scroll-smooth"
+          className="h-[85%] overflow-y-scroll scrollbar-none scroll-smooth max-w-full "
         >
           {otherUser &&
             conversation &&
@@ -315,29 +312,29 @@ function Conversation({ onClose }) {
                   <div
                     className={
                       message.sender === currentUser
-                        ? "flex justify-end my-1 mr-1 mb-1 p-1"
-                        : "flex justify-start  my-1 ml-1 mb-1 p-1"
+                        ? "flex justify-end my-1 mr-1 mb-1 p-1 px-2 max-w-full"
+                        : "flex justify-start  my-1 ml-1 mb-1 p-1 px-2 max-w-full"
                     }
                   >
                     <div
                       className={
                         message.sender === currentUser
-                          ? " bg-[#596F7A] flex flex-col rounded-lg"
-                          : "bg-[#61397F] flex flex-col rounded-lg"
+                          ? " bg-[#596F7A] flex flex-col rounded-lg max-w-full"
+                          : "bg-[#61397F] flex flex-col rounded-lg max-w-full"
                       }
                     >
-                      <span
+                      <p
                         className={
                           message.sender === currentUser
-                            ? " bg-[#596F7A] text-white  leading-3 text-xl mb-1 p-2 rounded-lg "
-                            : "bg-[#61397F] text-white  leading-3 text-xl mb-1 p-2 rounded-lg "
+                            ? " bg-[#596F7A] text-white  block text-xl mb-1 break-words  rounded-lg overflow-y-auto overflow-x-hidden h-auto"
+                            : "bg-[#61397F] text-white  block text-xl mb-1 break-words rounded-lg   max-w-full overflow-y-auto overflow-x-hidden h-auto"
                         }
                       >
                         {message.content}
-                      </span>
-                      <span className="text-white text-tiny p-1 text-right">
+                      </p>
+                      <p className="text-white text-tiny p-1 text-right  block w-full">
                         {convertTimestamp(message.timestamp)}
-                      </span>
+                      </p>
                     </div>
                   </div>
                 ) : (

@@ -266,7 +266,7 @@ function Options({ setIsConversationSelected }) {
 
   return (
     <>
-      <div className="h-[80px] max-w-[900px] lg:h-[120px] bg-[#61397F] text-white rounded-bl-2xl rounded-br-2xl flex justify-around items-center ">
+      <div className="h-[95px] max-w-[900px] lg:h-[120px] bg-[#61397F] text-white rounded-bl-2xl rounded-br-2xl flex justify-around items-center ">
         <BiLogOutCircle
           size={30}
           title="Log Out"
