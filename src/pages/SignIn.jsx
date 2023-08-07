@@ -79,7 +79,7 @@ function SignIn() {
           <span className="text-lg">Instant communication at your fingers</span>
         </h1>
 
-        <div className="flex h-screen items-center mt-20 ">
+        <div className="flex h-screen items-center mt-20 md:mt-0 ">
           <div className="shadow-2xl border-2 flex lg:flex-row rounded-lg relative ">
             <img
               src={mobileTexting}
@@ -184,11 +184,11 @@ function SignIn() {
             <div className=" hidden md:flex md:flex-col h-[100%] ml-4 my-2">
               <h1 className="hidden md:block top-4 ml-0 mb-2 text-[#733A7E] font-semibold text-2xl text-left z-20">
                 <span className="text-4xl font-bold">ChatApp</span> <br />
-                <span className="text-4xl font-bold">
+                <span className="text-2xl font-bold">
                   Instant communication
                 </span>{" "}
                 <br />
-                <span className="text-4xl font-bold">at your fingers</span>
+                <span className="text-2xl font-bold">at your fingers</span>
               </h1>
               <img src={fundoMetade} alt="/" className="w-[400px] mx-auto" />
             </div>

@@ -6,12 +6,13 @@ import { selectCurrentUser } from "../store/authReducer";
 import { MdEmojiEmotions } from "react-icons/md";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { AiOutlinePaperClip } from "react-icons/ai";
-import EmojiPicker from "emoji-picker-react";
 import { BsFillSendFill } from "react-icons/bs";
 import { selectConversationUser } from "../store/authReducer";
 import { useEffect } from "react";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import avatar from "../images/avatar.png";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
 function Conversation({ onClose }) {
   const currentUser = useSelector(selectCurrentUser);
@@ -61,7 +62,8 @@ function Conversation({ onClose }) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const handleEmojiSelect = (emoji) => {
-    setMessage((lastState) => lastState + emoji.emoji);
+    console.log(emoji);
+    setMessage((lastState) => lastState + emoji);
   };
 
   /* Closing EmojiPicker when clicking outside of The div*/
@@ -383,7 +385,7 @@ function Conversation({ onClose }) {
               <button
                 onClick={(event) => {
                   event.stopPropagation();
-                  setShowEmojiPicker(true);
+                  setShowEmojiPicker((lastState) => !lastState);
                 }}
                 className="ml-1"
               >
@@ -414,7 +416,13 @@ function Conversation({ onClose }) {
                   // }}
                   ref={emojiPickerRef}
                 >
-                  <EmojiPicker onEmojiClick={handleEmojiSelect} />
+                  <Picker
+                    className="w-[500px]"
+                    data={data}
+                    onEmojiSelect={(e) => handleEmojiSelect(e.native)}
+                    maxFrequentRows="0"
+                    perLine="7"
+                  />
                 </div>
               )}
               <textarea
