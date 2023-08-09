@@ -188,10 +188,16 @@ function SignUp() {
                     Sign Up
                   </button>
                   {sendValidationEmail && (
-                    <p className="text-xs text-green-300 mt-2">
-                      An email with the validation link has been sent to your
-                      Email!
-                    </p>
+                    <>
+                      <p className="text-xs text-green-300 mt-2">
+                        An email with the validation link has been sent to your
+                        Email!
+                      </p>
+                      <p className="text-xs mt-2">
+                        (You might need to check your spam box if you don't find
+                        your email)
+                      </p>
+                    </>
                   )}
                   <div className="mt-2 text-center text-[#44BFE1] font-bold ">
                     <span>Have an Account? </span>
