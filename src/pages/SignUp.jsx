@@ -193,7 +193,7 @@ function SignUp() {
                         An email with the validation link has been sent to your
                         Email!
                       </p>
-                      <p className="text-xs mt-2">
+                      <p className="text-xs mt-2 text-red-700">
                         (You might need to check your spam box if you don't find
                         your email)
                       </p>
