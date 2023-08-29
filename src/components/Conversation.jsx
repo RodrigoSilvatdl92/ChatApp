@@ -1,5 +1,5 @@
 import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { db } from "../firebase";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../store/authReducer";
@@ -48,9 +48,37 @@ function Conversation({ onClose }) {
   }, [otherUser]);
 
   /*************************************************/
+
+  /* focus input */
+
+  const InputEl = useRef(null);
+
+  useEffect(() => {
+    if (!otherUser) return;
+    InputEl.current.focus();
+  }, [otherUser]);
+
+  /* press enter to send messages */
+
+  useEffect(() => {
+    function callback(e) {
+      console.log(e);
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleSendMessage();
+      }
+    }
+    document.addEventListener("keydown", callback);
+    return () => document.removeEventListener("keydown", callback);
+  }, [handleSendMessage]);
+
   /* Input */
 
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    setMessage("");
+  }, [otherUser]);
 
   const handleInputChange = (event) => {
     setMessage(event.target.value);
@@ -174,7 +202,7 @@ function Conversation({ onClose }) {
     }
   };
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = useCallback(async () => {
     if ((!otherUser && !message) || !otherUser || !message) {
       return setButtonDisabled(true);
     }
@@ -229,7 +257,7 @@ function Conversation({ onClose }) {
 
     // Clear the message input
     setMessage("");
-  };
+  }, [currentUser, otherUser, message, file]);
 
   /***********************************************************************/
   /* Load Conversation */
@@ -427,6 +455,7 @@ function Conversation({ onClose }) {
               )}
               <textarea
                 value={message}
+                ref={InputEl}
                 onChange={handleInputChange}
                 placeholder="Type your message..."
                 className="w-full px-1 pt-5 h-[100%] overflow-y-auto outline-none resize-none "
