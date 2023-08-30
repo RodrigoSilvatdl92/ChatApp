@@ -58,20 +58,6 @@ function Conversation({ onClose }) {
     InputEl.current.focus();
   }, [otherUser]);
 
-  /* press enter to send messages */
-
-  useEffect(() => {
-    function callback(e) {
-      console.log(e);
-      if (e.key === "Enter") {
-        e.preventDefault();
-        handleSendMessage();
-      }
-    }
-    document.addEventListener("keydown", callback);
-    return () => document.removeEventListener("keydown", callback);
-  }, [handleSendMessage]);
-
   /* Input */
 
   const [message, setMessage] = useState("");
@@ -257,7 +243,22 @@ function Conversation({ onClose }) {
 
     // Clear the message input
     setMessage("");
+    InputEl.current.focus();
   }, [currentUser, otherUser, message, file]);
+
+  /* press enter to send messages */
+
+  useEffect(() => {
+    function callback(e) {
+      console.log(e);
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleSendMessage();
+      }
+    }
+    document.addEventListener("keydown", callback);
+    return () => document.removeEventListener("keydown", callback);
+  }, [handleSendMessage]);
 
   /***********************************************************************/
   /* Load Conversation */
@@ -302,13 +303,15 @@ function Conversation({ onClose }) {
         <div className="flex justify-between">
           <div className="flex gap-2 items-center w-full ">
             {otherUserData === "" || !otherUser ? (
-              <p className="mx-auto w-full] mt-2">Start a conversation</p>
+              <p className="mx-auto w-full] mt-2 text-[#61397F]">
+                Start a conversation
+              </p>
             ) : (
               <>
                 <img
                   src={otherUserData?.perfil?.photo || avatar}
                   alt="/"
-                  className="w-[30px] h-[30px] xl:w-[50px] xl:h-[50px]  rounded-[50%] ml-2 object-cover mt-2"
+                  className="w-[30px] h-[30px] xl:w-[40px] xl:h-[40px]  rounded-[50%] ml-2 object-cover mt-2"
                 />
                 <p>
                   {`${
